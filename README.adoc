@@ -1,9 +1,11 @@
 = JRuby Open3 issue reproducer
 
-Reproducer for issues found when calling a command with `Open3`.
+Reproducer for issues found when calling a command with `Open3` in local Linux.
 
-Issue: Calling a command with Java 17 or above fails with:
+**Issue:**
 
+* Calling a command with Java 17 or above fails with:
++
 ----
 Exception in thread "main" org.jruby.exceptions.SystemCallError: (EBADF) Bad file descriptor - ls
         at org.jruby.RubyProcess.spawn(org/jruby/RubyProcess.java:1779)
@@ -14,7 +16,8 @@ Exception in thread "main" org.jruby.exceptions.SystemCallError: (EBADF) Bad fil
         at RUBY.<main>(<script>:11)
 ----
 
-Code works fine with Java 11.
+* Code works fine with Java 11.
+* However, oddly enough, the code runs fine in https://github.com/abelsromero/jruby-open3-test/actions[GitHub Actions] CI environments.
 
 == Setup
 
