@@ -1,0 +1,52 @@
+= JRuby Open3 issue reproducer
+
+Reproducer for issues found when calling a command with `Open3`.
+
+Issue: Calling a command with Java 17 or above fails with:
+
+----
+Exception in thread "main" org.jruby.exceptions.SystemCallError: (EBADF) Bad file descriptor - ls
+        at org.jruby.RubyProcess.spawn(org/jruby/RubyProcess.java:1779)
+        at org.jruby.RubyKernel.spawn(org/jruby/RubyKernel.java:1951)
+        at RUBY.popen_run(uri:classloader:/META-INF/jruby.home/lib/ruby/stdlib/open3.rb:222)
+        at RUBY.popen3(uri:classloader:/META-INF/jruby.home/lib/ruby/stdlib/open3.rb:103)
+        at RUBY.capture3(uri:classloader:/META-INF/jruby.home/lib/ruby/stdlib/open3.rb:290)
+        at RUBY.<main>(<script>:11)
+----
+
+Code works fine with Java 11.
+
+== Setup
+
+Install required Java version with https://sdkman.io/[sdkman].
+
+----
+sdk i java 11.0.25-tem
+sdk i java 17.0.13-tem
+sdk i java 21.0.5-tem
+----
+
+== How to run
+
+Build CLI distribution
+
+ ./gradlew installDist
+
+Run it!
+
+NOTE: `script.rb` simply runs `ls` command in the current path.
+
+./build/install/jruby-open3-test/bin/jruby-open-test src/main/resources/script.rb
+
+Alternate between Java versioons with
+
+----
+sdk use java 11.0.25-tem
+./build/install/jruby-open3-test/bin/jruby-open3-test src/main/resources/script.rb
+
+sdk use java 17.0.13-tem
+./build/install/jruby-open3-test/bin/jruby-open3-test src/main/resources/script.rb
+
+sdk use java 21.0.5-tem
+./build/install/jruby-open3-test/bin/jruby-open3-test src/main/resources/script.rb
+----
